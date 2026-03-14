@@ -2,7 +2,7 @@
 // components/shared/Navbar.tsx
 // Top nav: logo, role toggle (Farmer/Admin), Register/Dashboard, dark mode.
 // On mobile these collapse into a hamburger menu.
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useApp } from "@/context/AppContext";
 import { Button } from "@/components/ui/button";
 import { Leaf, Moon, Sun, ShieldCheck, User, LogIn, Menu, X } from "lucide-react";
@@ -14,6 +14,8 @@ export default function Navbar() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const menuOpenRef = useRef(menuOpen);
+  menuOpenRef.current = menuOpen;
 
   function handleRoleSwitch(role: "farmer" | "admin") {
     setRole(role);
@@ -22,16 +24,18 @@ export default function Navbar() {
     setMenuOpen(false);
   }
 
-  // Close menu when clicking outside
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (menuOpen && menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-      }
+  // Stable listener: same reference so add/remove never leaks
+  const handleClickOutside = useCallback((e: MouseEvent) => {
+    if (!menuOpenRef.current) return;
+    if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      setMenuOpen(false);
     }
+  }, []);
+
+  useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-  }, [menuOpen]);
+  }, [handleClickOutside]);
 
   // Prevent body scroll when menu is open on mobile
   useEffect(() => {
@@ -94,6 +98,62 @@ export default function Navbar() {
     </>
   );
 
+  // Mobile menu: list rows (Apple-style)
+  const mobileMenuItems = (
+    <div className="flex flex-col py-2">
+      <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/80 px-4 py-2">
+        <button
+          onClick={() => handleRoleSwitch("farmer")}
+          className={`flex flex-1 items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
+            activeRole === "farmer" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground active:bg-background/50"
+          }`}
+          aria-label="Switch to Farmer view"
+        >
+          <User className="h-5 w-5 shrink-0" />
+          Farmer
+        </button>
+        <button
+          onClick={() => handleRoleSwitch("admin")}
+          className={`flex flex-1 items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
+            activeRole === "admin" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground active:bg-background/50"
+          }`}
+          aria-label="Switch to Admin view"
+        >
+          <ShieldCheck className="h-5 w-5 shrink-0" />
+          Admin
+        </button>
+      </div>
+      {activeRole === "farmer" && !currentFarmer?.onboardingComplete && (
+        <Link
+          href="/onboarding"
+          onClick={() => setMenuOpen(false)}
+          className="mt-2 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-foreground transition-colors active:bg-muted/80"
+        >
+          <LogIn className="h-5 w-5 shrink-0 text-primary" />
+          Register
+        </Link>
+      )}
+      {activeRole === "farmer" && currentFarmer?.onboardingComplete && (
+        <Link
+          href="/dashboard"
+          onClick={() => setMenuOpen(false)}
+          className="mt-2 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-foreground transition-colors active:bg-muted/80"
+        >
+          <ShieldCheck className="h-5 w-5 shrink-0 text-primary" />
+          Dashboard
+        </Link>
+      )}
+      <button
+        onClick={() => { toggleDarkMode(); setMenuOpen(false); }}
+        className="mt-2 flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-muted-foreground transition-colors active:bg-muted/80"
+        aria-label="Toggle dark mode"
+      >
+        {darkMode ? <Sun className="h-5 w-5 shrink-0" /> : <Moon className="h-5 w-5 shrink-0" />}
+        Dark mode
+      </button>
+    </div>
+  );
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl" ref={menuRef}>
       <div className="mx-auto flex h-14 min-h-14 max-w-7xl items-center justify-between gap-2 px-3 sm:h-16 sm:px-6">
@@ -127,11 +187,29 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile dropdown menu — only in DOM when open to avoid any peek */}
+      {/* Mobile menu: overlay + frosted panel (Apple-style), only when open */}
       {menuOpen && (
-        <div className="grid overflow-hidden border-t border-border bg-background/95 backdrop-blur-xl md:hidden animate-in fade-in-0 slide-in-from-top-2 duration-200">
-          <div className="flex flex-col gap-3 px-3 pb-4 pt-3">
-            {navItems}
+        <div
+          className="fixed inset-0 top-14 z-30 md:hidden sm:top-16"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation menu"
+        >
+          {/* Dimmed backdrop — tap to close */}
+          <button
+            type="button"
+            onClick={() => setMenuOpen(false)}
+            className="absolute inset-0 bg-black/30 backdrop-blur-[1px] transition-opacity duration-200"
+            aria-label="Close menu"
+          />
+          {/* Frosted panel with rounded bottom */}
+          <div
+            className="relative mx-3 mt-1 overflow-hidden rounded-2xl border border-border bg-background/85 shadow-xl shadow-black/10 ring-1 ring-black/5 backdrop-blur-xl dark:bg-background/90 dark:ring-white/5"
+            style={{ animation: "menu-panel-in 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards" }}
+          >
+            <div className="px-3 pb-4 pt-1">
+              {mobileMenuItems}
+            </div>
           </div>
         </div>
       )}
