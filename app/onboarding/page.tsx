@@ -26,19 +26,19 @@ const STEPS = [
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { currentFarmer, saveFarmer, setCurrentFarmerId } = useApp();
+  const { currentFarmer, saveFarmer, setCurrentFarmerId, refreshFarmers } = useApp();
 
   // Active step (1-4)
   const [step, setStep] = useState<WizardStep>(1);
   const [submitting, setSubmitting] = useState(false);
 
-  // If no current farmer, create one on mount
+  // If no current farmer, create one on mount and sync context
   useEffect(() => {
     if (!currentFarmer) {
       const f = createFarmer();
       setCurrentFarmerId(f.id);
+      refreshFarmers();
     } else {
-      // Resume from where they left off
       const resume = Math.min((currentFarmer.completedStep || 0) + 1, 4) as WizardStep;
       setStep(resume);
     }

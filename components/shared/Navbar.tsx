@@ -98,60 +98,85 @@ export default function Navbar() {
     </>
   );
 
-  // Mobile menu: list rows (Apple-style)
+  // Mobile menu: 2026-style grouped sections, clear hierarchy
   const mobileMenuItems = (
-    <div className="flex flex-col py-2">
-      <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/80 px-4 py-2">
-        <button
-          onClick={() => handleRoleSwitch("farmer")}
-          className={`flex flex-1 items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
-            activeRole === "farmer" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground active:bg-background/50"
-          }`}
-          aria-label="Switch to Farmer view"
-        >
-          <User className="h-5 w-5 shrink-0" />
-          Farmer
-        </button>
-        <button
-          onClick={() => handleRoleSwitch("admin")}
-          className={`flex flex-1 items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
-            activeRole === "admin" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground active:bg-background/50"
-          }`}
-          aria-label="Switch to Admin view"
-        >
-          <ShieldCheck className="h-5 w-5 shrink-0" />
-          Admin
-        </button>
+    <nav className="flex flex-col gap-1" aria-label="Navigation menu">
+      {/* Role switch — compact segment */}
+      <div className="rounded-xl bg-muted/60 p-1.5">
+        <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          View as
+        </p>
+        <div className="flex gap-1.5">
+          <button
+            onClick={() => handleRoleSwitch("farmer")}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-3 text-sm font-semibold transition-all ${
+              activeRole === "farmer"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground active:bg-background/60"
+            }`}
+            aria-label="Switch to Farmer view"
+          >
+            <User className="h-4 w-4 shrink-0" />
+            Farmer
+          </button>
+          <button
+            onClick={() => handleRoleSwitch("admin")}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-3 text-sm font-semibold transition-all ${
+              activeRole === "admin"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground active:bg-background/60"
+            }`}
+            aria-label="Switch to Admin view"
+          >
+            <ShieldCheck className="h-4 w-4 shrink-0" />
+            Admin
+          </button>
+        </div>
       </div>
-      {activeRole === "farmer" && !currentFarmer?.onboardingComplete && (
-        <Link
-          href="/onboarding"
-          onClick={() => setMenuOpen(false)}
-          className="mt-2 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-foreground transition-colors active:bg-muted/80"
-        >
-          <LogIn className="h-5 w-5 shrink-0 text-primary" />
-          Register
-        </Link>
-      )}
-      {activeRole === "farmer" && currentFarmer?.onboardingComplete && (
-        <Link
-          href="/dashboard"
-          onClick={() => setMenuOpen(false)}
-          className="mt-2 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-foreground transition-colors active:bg-muted/80"
-        >
-          <ShieldCheck className="h-5 w-5 shrink-0 text-primary" />
-          Dashboard
-        </Link>
-      )}
-      <button
-        onClick={() => { toggleDarkMode(); setMenuOpen(false); }}
-        className="mt-2 flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-muted-foreground transition-colors active:bg-muted/80"
-        aria-label="Toggle dark mode"
-      >
-        {darkMode ? <Sun className="h-5 w-5 shrink-0" /> : <Moon className="h-5 w-5 shrink-0" />}
-        Dark mode
-      </button>
-    </div>
+
+      {/* Primary actions */}
+      <div className="rounded-xl bg-muted/40 p-1.5">
+        <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          Actions
+        </p>
+        <div className="flex flex-col gap-0.5">
+          {activeRole === "farmer" && !currentFarmer?.onboardingComplete && (
+            <Link
+              href="/onboarding"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition-colors active:bg-background/60"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15">
+                <LogIn className="h-4 w-4 text-primary" />
+              </span>
+              Register
+            </Link>
+          )}
+          {activeRole === "farmer" && currentFarmer?.onboardingComplete && (
+            <Link
+              href="/dashboard"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition-colors active:bg-background/60"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15">
+                <ShieldCheck className="h-4 w-4 text-primary" />
+              </span>
+              Dashboard
+            </Link>
+          )}
+          <button
+            onClick={() => { toggleDarkMode(); setMenuOpen(false); }}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm font-medium text-muted-foreground transition-colors active:bg-background/60"
+            aria-label="Toggle dark mode"
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted">
+              {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </span>
+            {darkMode ? "Light mode" : "Dark mode"}
+          </button>
+        </div>
+      </div>
+    </nav>
   );
 
   return (
@@ -199,15 +224,15 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMenuOpen(false)}
-            className="absolute inset-0 bg-black/30 backdrop-blur-[1px] transition-opacity duration-200"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-200"
             aria-label="Close menu"
           />
-          {/* Frosted panel with rounded bottom */}
+          {/* Solid panel — less transparent, 2026-style */}
           <div
-            className="relative mx-3 mt-1 overflow-hidden rounded-2xl border border-border bg-background/85 shadow-xl shadow-black/10 ring-1 ring-black/5 backdrop-blur-xl dark:bg-background/90 dark:ring-white/5"
+            className="relative mx-3 mt-1 overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-black/15 ring-1 ring-black/5 dark:ring-white/10"
             style={{ animation: "menu-panel-in 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards" }}
           >
-            <div className="px-3 pb-4 pt-1">
+            <div className="px-2 pb-5 pt-2">
               {mobileMenuItems}
             </div>
           </div>

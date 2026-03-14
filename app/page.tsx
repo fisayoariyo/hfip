@@ -11,14 +11,15 @@ import { useRouter } from "next/navigation";
 import Footer from "@/components/shared/Footer";
 
 export default function HomePage() {
-  const { currentFarmer, setCurrentFarmerId, activeRole } = useApp();
+  const { currentFarmer, setCurrentFarmerId, refreshFarmers, activeRole } = useApp();
   const router = useRouter();
 
   function handleStartRegistration() {
-    // Create a new farmer record and go to onboarding
     const farmer = createFarmer();
     setCurrentFarmerId(farmer.id);
-    router.push("/onboarding");
+    refreshFarmers();
+    // Defer nav so React commits state before onboarding reads context
+    queueMicrotask(() => router.push("/onboarding"));
   }
 
   const features = [
