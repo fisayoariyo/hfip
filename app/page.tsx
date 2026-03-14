@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Leaf, ShieldCheck, Fingerprint, MapPin, FileText, CheckCircle2 } from "lucide-react";
 import { createFarmer } from "@/lib/storage";
 import { useRouter } from "next/navigation";
+import Footer from "@/components/shared/Footer";
 
 export default function HomePage() {
   const { currentFarmer, setCurrentFarmerId, activeRole } = useApp();
@@ -28,9 +29,9 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Background grid */}
-      <div className="pointer-events-none absolute inset-0 bg-grid-emerald opacity-40 sm:opacity-50" />
+    <div className="relative min-h-screen overflow-x-hidden">
+      {/* Background grid — full height so footer has subtle continuation */}
+      <div className="pointer-events-none absolute inset-0 bg-grid-emerald opacity-30 sm:opacity-40" />
 
       {/* Hero */}
       <section className="relative mx-auto max-w-4xl px-4 pb-16 pt-10 text-center sm:px-6 sm:pb-20 sm:pt-20 lg:pt-28">
@@ -44,11 +45,11 @@ export default function HomePage() {
         </div>
 
         <h1
-          className="text-3xl font-bold tracking-tight text-balance opacity-0 sm:text-5xl sm:leading-tight lg:text-6xl"
+          className="text-3xl font-bold tracking-tight text-balance opacity-0 sm:text-5xl lg:text-6xl lg:leading-[1.15]"
           style={{ animation: "hero-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards" }}
         >
-          Every Farmer Deserves
-          <span className="mt-1 block text-primary">a Digital Identity</span>
+          <span className="block leading-tight">Every Farmer Deserves</span>
+          <span className="mt-2 block leading-tight text-primary sm:mt-2.5 lg:mt-3">a Digital Identity</span>
         </h1>
 
         <p
@@ -108,7 +109,16 @@ export default function HomePage() {
       </section>
 
       {/* Feature grid — animated cards */}
-      <section className="relative mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-24 lg:px-8">
+      <section className="relative mx-auto max-w-6xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8" aria-labelledby="features-heading">
+        <h2 id="features-heading" className="sr-only">
+          How HFIP works
+        </h2>
+        <p
+          className="mb-8 text-center text-sm font-medium uppercase tracking-wider text-muted-foreground opacity-0 sm:mb-10"
+          style={{ animation: "hero-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards" }}
+        >
+          How it works
+        </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6">
           {features.map((f, i) => (
             <div
@@ -130,16 +140,16 @@ export default function HomePage() {
       </section>
 
       {/* Stats bar */}
-      <section className="relative border-t border-border bg-muted/30 py-8 sm:py-10">
+      <section className="relative border-t border-border bg-muted/30 py-10 sm:py-12" aria-label="Platform stats">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <div className="grid grid-cols-2 gap-6 text-center sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-8 text-center sm:grid-cols-4">
             {[
               { value: "2.5M+", label: "Target Farmers" },
               { value: "37", label: "States Covered" },
               { value: "<2s", label: "Registration Time" },
               { value: "100%", label: "Offline Capable" },
             ].map(s => (
-              <div key={s.label}>
+              <div key={s.label} className="transition-transform duration-200 hover:scale-105">
                 <p className="text-2xl font-bold text-primary sm:text-3xl">{s.value}</p>
                 <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{s.label}</p>
               </div>
@@ -147,6 +157,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

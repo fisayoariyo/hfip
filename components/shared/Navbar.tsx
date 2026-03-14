@@ -127,16 +127,14 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile dropdown menu */}
-      <div
-        className={`grid gap-3 overflow-hidden border-t border-border bg-background/95 backdrop-blur-xl transition-[grid-template-rows] duration-200 ease-out md:hidden ${
-          menuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-        }`}
-      >
-        <div className="flex min-h-0 flex-col gap-3 px-3 pb-4 pt-3">
-          {navItems}
+      {/* Mobile dropdown menu — only in DOM when open to avoid any peek */}
+      {menuOpen && (
+        <div className="grid overflow-hidden border-t border-border bg-background/95 backdrop-blur-xl md:hidden animate-in fade-in-0 slide-in-from-top-2 duration-200">
+          <div className="flex flex-col gap-3 px-3 pb-4 pt-3">
+            {navItems}
+          </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }
