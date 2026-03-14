@@ -40,11 +40,21 @@ const config: Config = {
           "70%": { boxShadow: "0 0 0 14px rgba(5,150,105,0)" },
           "100%": { boxShadow: "0 0 0 0 rgba(5,150,105,0)" },
         },
+        "card-in": {
+          from: { opacity: "0", transform: "translateY(24px) scale(0.97)" },
+          to: { opacity: "1", transform: "translateY(0) scale(1)" },
+        },
+        "hero-in": {
+          from: { opacity: "0", transform: "translateY(12px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
       },
       animation: {
         "fade-in": "fade-in 0.35s ease-out",
         "slide-right": "slide-right 0.3s ease-out",
         "pulse-ring": "pulse-ring 1.8s ease-out infinite",
+        "card-in": "card-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards",
+        "hero-in": "hero-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards",
       },
     },
   },

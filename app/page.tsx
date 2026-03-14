@@ -28,91 +28,109 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden">
       {/* Background grid */}
-      <div className="pointer-events-none absolute inset-0 bg-grid-emerald opacity-50" />
+      <div className="pointer-events-none absolute inset-0 bg-grid-emerald opacity-40 sm:opacity-50" />
 
       {/* Hero */}
-      <section className="relative mx-auto max-w-4xl px-4 pb-20 pt-16 text-center sm:px-6 sm:pt-24">
+      <section className="relative mx-auto max-w-4xl px-4 pb-16 pt-10 text-center sm:px-6 sm:pb-20 sm:pt-20 lg:pt-28">
         {/* Pill badge */}
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400">
-          <Leaf className="h-3.5 w-3.5" />
-          Phase 1 — Digital Farmer Identity System
+        <div
+          className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1.5 text-xs font-semibold text-emerald-700 opacity-0 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400 sm:mb-6 sm:px-4"
+          style={{ animation: "hero-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards" }}
+        >
+          <Leaf className="h-3.5 w-3.5 shrink-0" />
+          <span className="truncate">Phase 1 — Digital Farmer Identity</span>
         </div>
 
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+        <h1
+          className="text-3xl font-bold tracking-tight text-balance opacity-0 sm:text-5xl sm:leading-tight lg:text-6xl"
+          style={{ animation: "hero-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards" }}
+        >
           Every Farmer Deserves
-          <span className="block text-primary">a Digital Identity</span>
+          <span className="mt-1 block text-primary">a Digital Identity</span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
+        <p
+          className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground opacity-0 sm:mt-6 sm:text-lg lg:text-xl"
+          style={{ animation: "hero-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards" }}
+        >
           HFIP gives every Nigerian farmer a secure, verifiable digital identity card —
           unlocking access to credit, inputs, and government support programmes.
         </p>
 
-        <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <div
+          className="mt-8 flex w-full max-w-sm flex-col gap-3 opacity-0 sm:mt-10 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center"
+          style={{ animation: "hero-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards" }}
+        >
           {activeRole === "admin" ? (
-            <Button size="xl" asChild>
+            <Button size="xl" className="w-full sm:w-auto" asChild>
               <Link href="/admin">
-                <ShieldCheck className="h-5 w-5" />
+                <ShieldCheck className="h-5 w-5 shrink-0" />
                 Open Admin Dashboard
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-5 w-5 shrink-0" />
               </Link>
             </Button>
           ) : currentFarmer?.onboardingComplete ? (
-            <Button size="xl" asChild>
+            <Button size="xl" className="w-full sm:w-auto" asChild>
               <Link href="/dashboard">
-                View My Dashboard <ArrowRight className="h-5 w-5" />
+                View My Dashboard <ArrowRight className="h-5 w-5 shrink-0" />
               </Link>
             </Button>
           ) : currentFarmer ? (
-            <Button size="xl" asChild>
+            <Button size="xl" className="w-full sm:w-auto" asChild>
               <Link href="/onboarding">
-                Continue Registration <ArrowRight className="h-5 w-5" />
+                Continue Registration <ArrowRight className="h-5 w-5 shrink-0" />
               </Link>
             </Button>
           ) : (
-            <Button size="xl" onClick={handleStartRegistration}>
-              Start Registration <ArrowRight className="h-5 w-5" />
+            <Button size="xl" className="w-full sm:w-auto" onClick={handleStartRegistration}>
+              Start Registration <ArrowRight className="h-5 w-5 shrink-0" />
             </Button>
           )}
-          <Button size="xl" variant="outline" asChild>
-            <Link href="/admin">
-              Admin Demo
-            </Link>
+          <Button size="xl" variant="outline" className="w-full sm:w-auto" asChild>
+            <Link href="/admin">Admin Demo</Link>
           </Button>
         </div>
 
         {/* Trust badges */}
-        <div className="mt-10 flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
+        <div
+          className="mt-8 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground opacity-0 sm:mt-10"
+          style={{ animation: "hero-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards" }}
+        >
           {["Federal Ministry of Agriculture", "CBN AgriFinance", "NIRSAL Microfinance"].map(b => (
             <div key={b} className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-              {b}
+              <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+              <span className="truncate">{b}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Feature grid */}
-      <section className="relative mx-auto max-w-5xl px-4 pb-24 sm:px-6">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Feature grid — animated cards */}
+      <section className="relative mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-24 lg:px-8">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6">
           {features.map((f, i) => (
-            <div key={f.title}
-              className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md hover:border-primary/30"
-              style={{ animationDelay: `${i * 80}ms` }}>
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                <f.icon className="h-6 w-6 text-primary" />
+            <div
+              key={f.title}
+              className="group relative rounded-2xl border border-border bg-card p-5 shadow-sm opacity-0 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20 sm:p-6"
+              style={{
+                animation: "card-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards",
+                animationDelay: `${0.5 + i * 0.08}s`,
+              }}
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 transition-transform duration-300 group-hover:scale-110 sm:h-12 sm:w-12">
+                <f.icon className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
               </div>
-              <h3 className="mt-4 font-semibold">{f.title}</h3>
-              <p className="mt-1.5 text-sm text-muted-foreground">{f.desc}</p>
+              <h3 className="mt-4 font-semibold tracking-tight sm:text-base">{f.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Stats bar */}
-      <section className="relative border-t border-border bg-muted/30 py-10">
+      <section className="relative border-t border-border bg-muted/30 py-8 sm:py-10">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <div className="grid grid-cols-2 gap-6 text-center sm:grid-cols-4">
             {[
@@ -122,8 +140,8 @@ export default function HomePage() {
               { value: "100%", label: "Offline Capable" },
             ].map(s => (
               <div key={s.label}>
-                <p className="text-3xl font-bold text-primary">{s.value}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
+                <p className="text-2xl font-bold text-primary sm:text-3xl">{s.value}</p>
+                <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{s.label}</p>
               </div>
             ))}
           </div>

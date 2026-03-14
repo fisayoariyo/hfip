@@ -57,6 +57,9 @@
   * { @apply border-border; box-sizing: border-box; }
   html { scroll-behavior: smooth; overflow-y: scroll; }
   body { @apply bg-background text-foreground font-sans; -webkit-font-smoothing: antialiased; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; }
+  }
 }
 
 @layer utilities {
