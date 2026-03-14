@@ -34,7 +34,7 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="relative mx-auto max-w-4xl px-4 pb-16 pt-10 text-center sm:px-6 sm:pb-20 sm:pt-20 lg:pt-28">
-        {/* Pill badge */}
+        {/* Pill badge — opacity-0 so hidden until hero-in runs; keyframes in globals.css */}
         <div
           className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1.5 text-xs font-semibold text-emerald-700 opacity-0 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400 sm:mb-6 sm:px-4"
           style={{ animation: "hero-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards" }}
