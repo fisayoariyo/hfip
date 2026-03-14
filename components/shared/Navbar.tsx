@@ -199,11 +199,13 @@ export default function Navbar() {
           {navItems}
         </div>
 
-        {/* Mobile: hamburger */}
+        {/* Mobile: hamburger — instant tap feedback, no delay */}
         <div className="flex items-center gap-2 md:hidden">
           <button
+            type="button"
             onClick={() => setMenuOpen((o) => !o)}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border text-foreground transition-colors hover:bg-accent"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-transparent text-foreground transition-colors hover:bg-accent active:scale-95 active:bg-accent"
+            style={{ touchAction: "manipulation" }}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
@@ -220,17 +222,17 @@ export default function Navbar() {
           aria-modal="true"
           aria-label="Navigation menu"
         >
-          {/* Dimmed backdrop — tap to close */}
+          {/* Backdrop visible immediately, no fade delay */}
           <button
             type="button"
             onClick={() => setMenuOpen(false)}
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-200"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             aria-label="Close menu"
           />
-          {/* Solid panel — less transparent, 2026-style */}
+          {/* Panel animates in; backdrop already visible for instant feedback */}
           <div
             className="relative mx-3 mt-1 overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-black/15 ring-1 ring-black/5 dark:ring-white/10"
-            style={{ animation: "menu-panel-in 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards" }}
+            style={{ animation: "menu-panel-in 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards" }}
           >
             <div className="px-2 pb-5 pt-2">
               {mobileMenuItems}
